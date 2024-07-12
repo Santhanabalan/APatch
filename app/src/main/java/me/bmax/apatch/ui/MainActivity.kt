@@ -29,6 +29,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.navigation.findNavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import coil.Coil
@@ -105,6 +106,21 @@ class MainActivity : AppCompatActivity() {
 
         isLoading = false
     }
+    
+    override fun onBackPressed() {
+        val navController = findNavController(R.id.nav_host_fragment)
+        if (navController.currentDestination?.id != R.id.homeFragment) {
+            // Not on the home page, attempt to navigate back
+            if (!navController.popBackStack()) {
+                // No more back stack to pop, so perform the default action
+                super.onBackPressed()
+            }
+        } else {
+            // On the home page, perform the default action
+            super.onBackPressed()
+        }
+    }
+
 }
 
 @Composable
